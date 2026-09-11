@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haircare Routine & Tracker | Routine Minimal</title>
+  <meta name="description" content="Aplicación de seguimiento para rutina capilar y cuidado de ondas.">
+  
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-lavender: #e9d5ff;
+      --accent-purple: #8b5cf6;
+      --accent-mint: #d1fae5;
+      --accent-green: #10b981;
+      --border-color: #f1f5f9;
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --shadow-subtle: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Header Semántico */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 4px;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .badge-status {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge-wash { background-color: var(--accent-lavender); color: var(--accent-purple); }
+    .badge-rest { background-color: var(--accent-mint); color: var(--accent-green); }
+
+    /* Card Principal / Dashboard */
+    .hero-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-subtle);
+      border: 1px solid var(--border-color);
+    }
+
+    .hero-card h2 {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .hero-card .date-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    /* Checklist de Rutina */
+    .routine-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .routine-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background-color: var(--bg-primary);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .routine-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-purple);
+      cursor: pointer;
+    }
+
+    .routine-item span {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* Recomendaciones de Productos Section */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .product-card .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--accent-purple);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .product-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .product-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Navegación por Días (Selector) */
+    .day-selector {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .day-btn {
+      flex: 1;
+      min-width: 60px;
+      padding: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .day-btn.active {
+      background: var(--text-main);
+      color: #ffffff;
+      border-color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+
+  <main class="app-container">
+    
+    <!-- Encabezado -->
+    <header>
+      <div>
+        <h1>Mi Rutina Capilar</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Ondas 2B/2C • Brillo & Sedosidad</p>
+      </div>
+      <span id="day-status-badge" class="badge-status badge-wash">Día de Lavado</span>
+    </header>
+
+    <!-- Selector de Días de la Semana -->
+    <nav class="day-selector" aria-label="Días de la semana">
+      <button class="day-btn" onclick="setDay('Lun')">Lun</button>
+      <button class="day-btn active" onclick="setDay('Mar')">Mar</button>
+      <button class="day-btn" onclick="setDay('Mié')">Mié</button>
+      <button class="day-btn" onclick="setDay('Jue')">Jue</button>
+      <button class="day-btn" onclick="setDay('Vie')">Vie</button>
+      <button class="day-btn" onclick="setDay('Sáb')">Sáb</button>
+      <button class="day-btn" onclick="setDay('Dom')">Dom</button>
+    </nav>
+
+    <!-- Tarjeta Principal de Rutina -->
+    <section class="hero-card" aria-labelledby="routine-heading">
+      <h2 id="routine-heading">Tratamiento Programado</h2>
+      <div id="routine-title" class="date-title">Hidratación + Definición Gloss</div>
+
+      <ul id="routine-steps" class="routine-list">
+        <!-- Los pasos se cargan dinámicamente según el día -->
+      </ul>
+    </section>
+
+    <!-- Recomendación de Productos Nuevos -->
+    <section>
+      <h2 class="section-title">Productos Recomendados para Sumar</h2>
+      <div class="product-grid">
+        <article class="product-card">
+          <span class="tag">Anti-Frizz / Fijación</span>
+          <h3>Gel/Mousse Curl</h3>
+          <p>Para fijar la onda tras la crema Glycolic Gloss y sellar la humedad sin peso.</p>
+        </article>
+
+        <article class="product-card">
+          <span class="tag">Brillo Extremo</span>
+          <h3>Sérum de Silicio / Aceite Ligero</h3>
+          <p>Para romper el "caste" del secado en lugar de aceites pesados si buscas más soltura.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const schedule = {
+      'Lun': { type: 'rest', title: 'Día de Descanso', steps: ['No lavar hoy', 'Usar gorro de satín o funda para dormir', 'Aplica 1 gota de aceite en puntas si sientes resequedad'] },
+      'Mar': { type: 'wash', title: 'Hidratación & Brillo Gloss', steps: ['Aceite Romero (Pre-poo 1h antes)', 'Shampoo Herbal Essences Chamomile', 'Mascarilla Elvive Hidra [Hialurónico]', 'Acondicionador Elvive Glycolic Gloss', 'Termoprotector Cloe + Crema de Peinar con Scrunch'] },
+      'Mié': { type: 'rest', title: 'Día de Descanso', steps: ['Proteger con refrescado de agua/crema si es necesario', 'Funda de satín para dormir'] },
+      'Jue': { type: 'rest', title: 'Día de Descanso', steps: ['Día libre de lavado', 'Evitar atar el cabello con ligas tirantes'] },
+      'Vie': { type: 'wash', title: 'Nutrición Antifrizz (Cacao)', steps: ['Shampoo Herbal Essences Chamomile', 'Mascarilla Hair Food Cacao (3-5 min)', 'Acondicionador Elvive Glycolic Gloss', 'Termoprotector Cloe + Estilizado con Airpro Max o Difusor'] },
+      'Sáb': { type: 'rest', title: 'Día de Descanso', steps: ['Preserva tus ondas secas con 1 gota de aceite de romero'] },
+      'Dom': { type: 'wash', title: 'Clarificante Detox (Cada 14 días)', steps: ['Shampoo Familand Moringa Detox', 'Mascarilla Hidra Hialurónico', 'Acondicionador Glycolic Gloss', 'Protector Cloe + Definición completa'] }
+    };
+
+    function setDay(day) {
+      document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const data = schedule[day];
+      const badge = document.getElementById('day-status-badge');
+      const title = document.getElementById('routine-title');
+      const stepsContainer = document.getElementById('routine-steps');
+
+      if (data.type === 'wash') {
+        badge.textContent = 'Día de Lavado';
+        badge.className = 'badge-status badge-wash';
+      } else {
+        badge.textContent = 'Día de Descanso';
+        badge.className = 'badge-status badge-rest';
+      }
+
+      title.textContent = data.title;
+      stepsContainer.innerHTML = data.steps.map(step => `
+        <li class="routine-item">
+          <input type="checkbox">
+          <span>${step}</span>
+        </li>
+      `).join('');
+    }
+
+    // Inicializar en Martes
+    setDay('Mar');
+  </script>
+</body>
+</html>
