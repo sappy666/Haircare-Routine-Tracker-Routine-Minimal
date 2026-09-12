@@ -3,133 +3,302 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fbe2e8">
   <title>Haircare Routine & Tracker | Routine Minimal</title>
   <meta name="description" content="Aplicación de seguimiento para rutina capilar y cuidado de ondas.">
-  
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-primary: #f8fafc;
+      --bg-a: #f7e3ef;
+      --bg-b: #fbe2e8;
+      --bg-c: #fde3d7;
+      --page-bg: #fffaf9;
       --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --accent-lavender: #e9d5ff;
-      --accent-purple: #8b5cf6;
-      --accent-mint: #d1fae5;
-      --accent-green: #10b981;
-      --border-color: #f1f5f9;
-      --radius-lg: 20px;
-      --radius-md: 12px;
-      --shadow-subtle: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      --cell-tint: #fdf1f5;
+      --text-main: #3a2e3c;
+      --text-muted: #a495a3;
+      --accent-pink: #dd6f9c;
+      --accent-pink-deep: #c2447a;
+      --accent-pink-soft: #ffe1ec;
+      --accent-mint: #e2f5ea;
+      --accent-mint-deep: #3f9c6d;
+      --border-color: #f4e6ec;
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow-soft: 0 20px 40px -18px rgba(196, 90, 140, 0.25);
+      --shadow-tiny: 0 8px 20px -10px rgba(196, 90, 140, 0.2);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: var(--bg-primary);
+      background: linear-gradient(150deg, var(--bg-a) 0%, var(--bg-b) 45%, var(--bg-c) 100%);
+      background-attachment: fixed;
       color: var(--text-main);
       display: flex;
       justify-content: center;
-      padding: 20px;
+      padding: 28px 16px;
       min-height: 100vh;
     }
 
-    .app-container {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Header Semántico */
-    header {
+    @keyframes pop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      background: var(--page-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 32px 28px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .page > * {
+      animation: fadeInUp 0.6s ease both;
+    }
+    .page > *:nth-child(1) { animation-delay: 0.02s; }
+    .page > *:nth-child(2) { animation-delay: 0.08s; }
+    .page > *:nth-child(3) { animation-delay: 0.14s; }
+    .page > *:nth-child(4) { animation-delay: 0.2s; }
+    .page > *:nth-child(5) { animation-delay: 0.26s; }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-pink-deep);
+      margin-bottom: 6px;
+    }
+
+    /* Header */
+    .top-bar {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 10px 4px;
+      align-items: flex-start;
+      gap: 12px;
     }
 
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+    .top-bar h1 {
+      font-size: clamp(2rem, 7vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
     }
 
-    .badge-status {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .badge-wash { background-color: var(--accent-lavender); color: var(--accent-purple); }
-    .badge-rest { background-color: var(--accent-mint); color: var(--accent-green); }
-
-    /* Card Principal / Dashboard */
-    .hero-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-subtle);
-      border: 1px solid var(--border-color);
-    }
-
-    .hero-card h2 {
-      font-size: 1.1rem;
+    .top-bar .subtitle {
+      margin-top: 8px;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .hero-card .date-title {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    /* Checklist de Rutina */
-    .routine-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .routine-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      background-color: var(--bg-primary);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .routine-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      accent-color: var(--accent-purple);
-      cursor: pointer;
-    }
-
-    .routine-item span {
-      font-size: 0.95rem;
       font-weight: 500;
     }
 
-    /* Recomendaciones de Productos Section */
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 12px;
+    .badge {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: transform 0.25s ease, background 0.3s ease;
     }
 
-    .product-grid {
+    .badge-wash { background-color: var(--accent-pink-soft); color: var(--accent-pink-deep); }
+    .badge-rest { background-color: var(--accent-mint); color: var(--accent-mint-deep); }
+
+    /* Selector de días */
+    .day-selector {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .day-btn {
+      flex: 1;
+      min-width: 56px;
+      padding: 12px 6px;
+      background: var(--cell-tint);
+      border: none;
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.25s ease;
+    }
+
+    .day-btn:hover {
+      background: var(--accent-pink-soft);
+      color: var(--accent-pink-deep);
+    }
+
+    .day-btn.active {
+      background: var(--accent-pink);
+      color: #ffffff;
+      transform: scale(1.06);
+      box-shadow: var(--shadow-tiny);
+    }
+
+    /* Bento de rutina */
+    .routine-bento {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bento-cell {
+      background: var(--cell-tint);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .bento-hero {
+      background: linear-gradient(135deg, var(--accent-pink-soft), var(--cell-tint));
+    }
+
+    .hero-title {
+      font-size: clamp(1.3rem, 5vw, 1.6rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: var(--accent-pink);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-pink-deep);
+      white-space: nowrap;
+    }
+
+    .steps-grid {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .step-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .step-cell:first-child {
+      grid-column: 1 / -1;
+    }
+
+    .step-cell:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-tiny);
+    }
+
+    .step-cell.checked {
+      background: var(--accent-pink-soft);
+    }
+
+    .step-check {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .check-visual {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .check-visual::after {
+      content: "";
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) scale(0);
+      transition: transform 0.2s ease;
+    }
+
+    .step-cell.checked .check-visual {
+      background: var(--accent-pink);
+      animation: pop 0.3s ease;
+    }
+
+    .step-cell.checked .check-visual::after {
+      transform: rotate(-45deg) scale(1);
+    }
+
+    .step-text {
+      font-size: 0.88rem;
+      font-weight: 500;
+      line-height: 1.35;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+
+    .step-cell.checked .step-text {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    /* Productos */
+    .products-bento {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -137,112 +306,135 @@
 
     .product-card {
       background: var(--card-bg);
-      padding: 16px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-subtle);
+      box-shadow: var(--shadow-tiny);
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .product-wide {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
     }
 
     .product-card .tag {
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.7rem;
+      font-weight: 700;
       text-transform: uppercase;
-      color: var(--accent-purple);
+      letter-spacing: 0.06em;
+      color: var(--accent-pink-deep);
       margin-bottom: 6px;
       display: block;
     }
 
     .product-card h3 {
-      font-size: 0.95rem;
-      margin-bottom: 4px;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .product-card p {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
+      line-height: 1.4;
     }
 
-    /* Navegación por Días (Selector) */
-    .day-selector {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 8px;
+    /* Footer / marca */
+    .brand-footer {
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
     }
 
-    .day-btn {
-      flex: 1;
-      min-width: 60px;
-      padding: 10px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      text-align: center;
-      cursor: pointer;
-      font-size: 0.85rem;
+    .wordmark {
+      font-size: clamp(3rem, 16vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text-main);
+      line-height: 0.95;
+      margin: 4px 0 10px;
+    }
+
+    .wordmark .dot {
+      color: var(--accent-pink);
+    }
+
+    .footer-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
       font-weight: 500;
-    }
-
-    .day-btn.active {
-      background: var(--text-main);
-      color: #ffffff;
-      border-color: var(--text-main);
     }
   </style>
 </head>
 <body>
 
-  <main class="app-container">
-    
+  <div class="page">
+
     <!-- Encabezado -->
-    <header>
+    <header class="top-bar">
       <div>
-        <h1>Mi Rutina Capilar</h1>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Ondas 2B/2C • Brillo & Sedosidad</p>
+        <p class="eyebrow">cuidado capilar</p>
+        <h1>Mi rutina</h1>
+        <p class="subtitle">Ondas 2B/2C · Brillo & Sedosidad</p>
       </div>
-      <span id="day-status-badge" class="badge-status badge-wash">Día de Lavado</span>
+      <span id="day-status-badge" class="badge badge-wash">Día de lavado</span>
     </header>
 
     <!-- Selector de Días de la Semana -->
     <nav class="day-selector" aria-label="Días de la semana">
-      <button class="day-btn" onclick="setDay('Lun')">Lun</button>
-      <button class="day-btn active" onclick="setDay('Mar')">Mar</button>
-      <button class="day-btn" onclick="setDay('Mié')">Mié</button>
-      <button class="day-btn" onclick="setDay('Jue')">Jue</button>
-      <button class="day-btn" onclick="setDay('Vie')">Vie</button>
-      <button class="day-btn" onclick="setDay('Sáb')">Sáb</button>
-      <button class="day-btn" onclick="setDay('Dom')">Dom</button>
+      <button class="day-btn" onclick="setDay('Lun', this)">Lun</button>
+      <button class="day-btn active" onclick="setDay('Mar', this)">Mar</button>
+      <button class="day-btn" onclick="setDay('Mié', this)">Mié</button>
+      <button class="day-btn" onclick="setDay('Jue', this)">Jue</button>
+      <button class="day-btn" onclick="setDay('Vie', this)">Vie</button>
+      <button class="day-btn" onclick="setDay('Sáb', this)">Sáb</button>
+      <button class="day-btn" onclick="setDay('Dom', this)">Dom</button>
     </nav>
 
-    <!-- Tarjeta Principal de Rutina -->
-    <section class="hero-card" aria-labelledby="routine-heading">
-      <h2 id="routine-heading">Tratamiento Programado</h2>
-      <div id="routine-title" class="date-title">Hidratación + Definición Gloss</div>
+    <!-- Bento de la rutina del día -->
+    <section class="routine-bento" aria-labelledby="routine-heading">
+      <div class="bento-cell bento-hero">
+        <p class="eyebrow" id="routine-heading">Tratamiento de hoy</p>
+        <div id="routine-title" class="hero-title">Hidratación + Definición Gloss</div>
+        <div class="progress-wrap">
+          <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+          <span id="progress-label" class="progress-label">0/0 pasos</span>
+        </div>
+      </div>
 
-      <ul id="routine-steps" class="routine-list">
+      <ul id="routine-steps" class="steps-grid">
         <!-- Los pasos se cargan dinámicamente según el día -->
       </ul>
     </section>
 
     <!-- Recomendación de Productos Nuevos -->
     <section>
-      <h2 class="section-title">Productos Recomendados para Sumar</h2>
-      <div class="product-grid">
-        <article class="product-card">
+      <p class="eyebrow">para sumar a tu rutina</p>
+      <div class="products-bento">
+        <article class="bento-cell product-card product-wide">
           <span class="tag">Anti-Frizz / Fijación</span>
           <h3>Gel/Mousse Curl</h3>
           <p>Para fijar la onda tras la crema Glycolic Gloss y sellar la humedad sin peso.</p>
         </article>
 
-        <article class="product-card">
+        <article class="bento-cell product-card">
           <span class="tag">Brillo Extremo</span>
-          <h3>Sérum de Silicio / Aceite Ligero</h3>
-          <p>Para romper el "caste" del secado en lugar de aceites pesados si buscas más soltura.</p>
+          <h3>Sérum de Silicio</h3>
+          <p>Rompe el "caste" del secado en lugar de aceites pesados si buscas más soltura.</p>
         </article>
       </div>
     </section>
 
-  </main>
+    <!-- Marca -->
+    <footer class="brand-footer">
+      <p class="eyebrow">hecho con cariño</p>
+      <div class="wordmark">ondas<span class="dot">.</span></div>
+      <p class="footer-note">Sigue tu rutina, cuida tus ondas ✨</p>
+    </footer>
+
+  </div>
 
   <script>
     const schedule = {
@@ -255,9 +447,24 @@
       'Dom': { type: 'wash', title: 'Clarificante Detox (Cada 14 días)', steps: ['Shampoo Familand Moringa Detox', 'Mascarilla Hidra Hialurónico', 'Acondicionador Glycolic Gloss', 'Protector Cloe + Definición completa'] }
     };
 
-    function setDay(day) {
-      document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+    function updateProgress() {
+      const boxes = document.querySelectorAll('.step-check');
+      const total = boxes.length;
+      const done = document.querySelectorAll('.step-check:checked').length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-label').textContent = `${done}/${total} pasos`;
+    }
+
+    function toggleStep(checkbox) {
+      const cell = checkbox.closest('.step-cell');
+      cell.classList.toggle('checked', checkbox.checked);
+      updateProgress();
+    }
+
+    function setDay(day, btn) {
+      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
 
       const data = schedule[day];
       const badge = document.getElementById('day-status-badge');
@@ -265,24 +472,29 @@
       const stepsContainer = document.getElementById('routine-steps');
 
       if (data.type === 'wash') {
-        badge.textContent = 'Día de Lavado';
-        badge.className = 'badge-status badge-wash';
+        badge.textContent = 'Día de lavado';
+        badge.className = 'badge badge-wash';
       } else {
-        badge.textContent = 'Día de Descanso';
-        badge.className = 'badge-status badge-rest';
+        badge.textContent = 'Día de descanso';
+        badge.className = 'badge badge-rest';
       }
 
       title.textContent = data.title;
-      stepsContainer.innerHTML = data.steps.map(step => `
-        <li class="routine-item">
-          <input type="checkbox">
-          <span>${step}</span>
+      stepsContainer.innerHTML = data.steps.map((step, i) => `
+        <li class="bento-cell step-cell">
+          <label class="step-label">
+            <input type="checkbox" class="step-check" onchange="toggleStep(this)">
+            <span class="check-visual"></span>
+            <span class="step-text">${step}</span>
+          </label>
         </li>
       `).join('');
+
+      updateProgress();
     }
 
     // Inicializar en Martes
-    setDay('Mar');
+    setDay('Mar', document.querySelector('.day-btn.active'));
   </script>
 </body>
 </html>
